@@ -71,23 +71,30 @@
       }
     });
 
-    // Bouton de réinitialisation
-  document.getElementById('reset-btn').addEventListener('click', () => {
-    const today = new Date().toISOString().split('T')[0];
-    const nbPrises = localStorage.getItem('nbPrises');
-  
-    if (nbPrises) {
-      for (let i = 1; i <= parseInt(nbPrises); i++) {
-        const key = `taken-${today}-prise-${i}`;
-        localStorage.removeItem(key);
-      }
-    }
+   // Bouton de réinitialisation
+document.getElementById('reset-btn').addEventListener('click', () => {
+  const today = new Date().toISOString().split('T')[0];
+  const nbPrises = localStorage.getItem('nbPrises');
 
-  // Supprimer nombre de prises et réafficher le choix
+  // Supprime toutes les prises du jour
+  if (nbPrises) {
+    for (let i = 1; i <= parseInt(nbPrises); i++) {
+      const key = `taken-${today}-prise-${i}`;
+      localStorage.removeItem(key);
+    }
+  }
+
+  // Supprime le nombre de prises
   localStorage.removeItem('nbPrises');
+
+  // Réinitialise visuellement l’interface
   document.getElementById('prise-buttons').innerHTML = '';
   document.getElementById('setup').style.display = 'block';
+
+  // Optionnel : petite alerte pour feedback
+  alert("Journée réinitialisée ! 😊");
 });
+
 
 
     function setPrises(n) {
