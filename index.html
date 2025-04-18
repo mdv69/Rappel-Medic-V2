@@ -71,6 +71,25 @@
       }
     });
 
+    // Bouton de réinitialisation
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    const today = new Date().toISOString().split('T')[0];
+    const nbPrises = localStorage.getItem('nbPrises');
+  
+    if (nbPrises) {
+      for (let i = 1; i <= parseInt(nbPrises); i++) {
+        const key = `taken-${today}-prise-${i}`;
+        localStorage.removeItem(key);
+      }
+    }
+
+  // Supprimer nombre de prises et réafficher le choix
+  localStorage.removeItem('nbPrises');
+  document.getElementById('prise-buttons').innerHTML = '';
+  document.getElementById('setup').style.display = 'block';
+});
+
+
     function setPrises(n) {
       localStorage.setItem('nbPrises', n);
       document.getElementById('setup').style.display = 'none';
