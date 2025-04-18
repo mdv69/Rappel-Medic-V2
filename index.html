@@ -41,92 +41,112 @@
     <input type="file" id="backgroundPicker" accept="image/*">
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const backgroundPicker = document.getElementById('backgroundPicker');
-      const savedBackground = localStorage.getItem('userBackground');
-      if (savedBackground) {
-        document.body.style.backgroundImage = `url(${savedBackground})`;
-      }
+ <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const backgroundPicker = document.getElementById('backgroundPicker');
+    const savedBackground = localStorage.getItem('userBackground');
+    if (savedBackground) {
+      document.body.style.backgroundImage = `url(${savedBackground})`;
+    }
 
-      backgroundPicker.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+    backgroundPicker.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const dataURL = e.target.result;
-          document.body.style.backgroundImage = `url(${dataURL})`;
-          document.body.style.backgroundSize = 'cover';
-          document.body.style.backgroundPosition = 'center';
-          localStorage.setItem('userBackground', dataURL);
-        };
-        reader.readAsDataURL(file);
-      });
-
-      const savedPrises = localStorage.getItem('nbPrises');
-      if (savedPrises) {
-        generatePriseButtons(parseInt(savedPrises));
-        document.getElementById('setup').style.display = 'none';
-      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const dataURL = e.target.result;
+        document.body.style.backgroundImage = `url(${dataURL})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        localStorage.setItem('userBackground', dataURL);
+      };
+      reader.readAsDataURL(file);
     });
 
-   // Bouton de réinitialisation
-document.getElementById('reset-btn').addEventListener('click', () => {
-  const today = new Date().toISOString().split('T')[0];
-  const nbPrises = localStorage.getItem('nbPrises');
-
-  // Supprime toutes les prises du jour
-  if (nbPrises) {
-    for (let i = 1; i <= parseInt(nbPrises); i++) {
-      const key = `taken-${today}-prise-${i}`;
-      localStorage.removeItem(key);
+    const savedPrises = localStorage.getItem('nbPrises');
+    if (savedPrises) {
+      document.getElementById('setup').style.display = 'none';
+      generatePriseButtons(parseInt(savedPrises));
     }
-  }
 
-  // Supprime le nombre de prises
-  localStorage.removeItem('nbPrises');
+    // ✅ Bouton de réinitialisation
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      const today = new Date().toISOString().split('T')[0];
+      const nbPrises = localStorage.getItem('nbPrises');
 
-  // Réinitialise visuellement l’interface
-  document.getElementById('prise-buttons').innerHTML = '';
-  document.getElementById('setup').style.display = 'block';
+      if (nbPrises) {
+        for (let i = 1; i <= parseInt(nbPrises); i++) {
+          const key = `taken-${today}-prise-${i}`;
+          const nameKey = `name-${today}-prise-${i}`;
+          localStorage.removeItem(key);
+          localStorage.removeItem(nameKey);
+        }
+      }
 
-  // Optionnel : petite alerte pour feedback
-  alert("Journée réinitialisée ! 😊");
-});
+      localStorage.removeItem('nbPrises');
+      document.getElementById('prise-buttons').innerHTML = '';
+      document.getElementById('name-inputs').style.display = 'none';
+      document.getElementById('setup').style.display = 'block';
+    });
+  });
 
+  function setPrises(n) {
+    localStorage.setItem('nbPrises', n);
+    const nameInputs = document.getElementById('name-inputs');
+    nameInputs.innerHTML = '';
+    nameInputs.style.display = 'block';
 
+    for (let i = 1; i <= n; i++) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = `Nom de la prise n°${i}`;
+      input.id = `name-input-${i}`;
+      input.required = true;
+      nameInputs.appendChild(input);
+    }
 
-    function setPrises(n) {
-      localStorage.setItem('nbPrises', n);
+    const confirmBtn = document.createElement('button');
+    confirmBtn.textContent = "Valider les noms";
+    confirmBtn.onclick = () => {
+      const today = new Date().toISOString().split('T')[0];
+      for (let i = 1; i <= n; i++) {
+        const input = document.getElementById(`name-input-${i}`);
+        localStorage.setItem(`name-${today}-prise-${i}`, input.value || `Prise n°${i}`);
+      }
+      nameInputs.style.display = 'none';
       document.getElementById('setup').style.display = 'none';
       generatePriseButtons(n);
-    }
+    };
+    nameInputs.appendChild(confirmBtn);
+  }
 
-    function generatePriseButtons(n) {
-      const container = document.getElementById('prise-buttons');
-      const today = new Date().toISOString().split('T')[0];
-      container.innerHTML = '';
+  function generatePriseButtons(n) {
+    const container = document.getElementById('prise-buttons');
+    const today = new Date().toISOString().split('T')[0];
+    container.innerHTML = '';
 
-      for (let i = 1; i <= n; i++) {
-        const key = `taken-${today}-prise-${i}`;
-        const btn = document.createElement('button');
-        btn.textContent = `Prise n°${i}`;
-        btn.id = `btn-${i}`;
-        if (localStorage.getItem(key)) {
-          btn.classList.add('clicked');
-          btn.textContent = `✅ Prise n°${i} — ${localStorage.getItem(key)}`;
-        }
-        btn.addEventListener('click', () => {
-          const now = new Date();
-          const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-          localStorage.setItem(key, time);
-          btn.classList.add('clicked');
-          btn.textContent = `✅ Prise n°${i} — ${time}`;
-        });
-        container.appendChild(btn);
+    for (let i = 1; i <= n; i++) {
+      const key = `taken-${today}-prise-${i}`;
+      const btn = document.createElement('button');
+      const name = localStorage.getItem(`name-${today}-prise-${i}`) || `Prise n°${i}`;
+      btn.textContent = name;
+      btn.id = `btn-${i}`;
+      if (localStorage.getItem(key)) {
+        btn.classList.add('clicked');
+        btn.textContent = `✅ ${name} — ${localStorage.getItem(key)}`;
       }
+      btn.addEventListener('click', () => {
+        const now = new Date();
+        const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        localStorage.setItem(key, time);
+        btn.classList.add('clicked');
+        btn.textContent = `✅ ${name} — ${time}`;
+      });
+      container.appendChild(btn);
     }
-  </script>
+  }
+</script>
+
 </body>
 </html>
