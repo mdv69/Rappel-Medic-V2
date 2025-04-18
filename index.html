@@ -2,15 +2,19 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rappel Médicaments</title>
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest-v2.json">
   <link rel="stylesheet" href="styles.css">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-v2.png?v=2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Rappel Médicaments">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
-    <h1>As-tu pris ton médicament ?</h1>
+    <h1>As-tu pris tes médicaments aujourd’hui ?</h1>
 
     <!-- Sélecteur de nombre de prises -->
     <div id="setup" class="setup">
@@ -20,13 +24,16 @@
       <button onclick="setPrises(3)">3</button>
     </div>
 
-    <!-- Zone de confirmation -->
+    <!-- Zone de confirmation dynamique -->
     <div id="prise-buttons"></div>
 
-    <!-- Message de confirmation -->
-    <div id="confirmation-message"></div>
+    <!-- Message général (non utilisé ici mais gardé) -->
+    <p id="confirmation-message"></p>
 
-    <!-- Changer de fond -->
+    <!-- Phrase douce -->
+    <p class="quote">🌸 Prends soin de toi 💕</p>
+
+    <!-- Changement de fond personnalisé -->
     <input type="file" id="backgroundPicker" accept="image/*">
   </div>
 
