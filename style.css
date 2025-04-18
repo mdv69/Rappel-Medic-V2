@@ -10,8 +10,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Quicksand', sans-serif;
-  background-image: url('fond-medicaments.png'); /* adapte si besoin */
- background-size: 100% 100%;
+  background-image: url('fond-medicaments.png');
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
@@ -23,17 +23,13 @@ body {
   overflow: hidden;
 }
 
-
-
 .container {
   text-align: center;
   padding: 30px;
   max-width: 90%;
-  width: 350px; /* Tu peux ajuster à 300px ou 320px selon ton fond */
+  width: 350px;
   margin: 0 auto;
 }
-
-
 
 /* Titre */
 h1 {
@@ -53,11 +49,17 @@ button {
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin: 10px 5px;
 }
 
 /* Changement visuel après clic */
 button.clicked {
   background-color: #6fcf97;
+}
+
+/* Zone de setup */
+.setup button {
+  margin: 0 10px 20px;
 }
 
 /* Message de confirmation */
@@ -74,4 +76,9 @@ button.clicked {
   font-style: italic;
   color: #b469e3;
   font-size: 1rem;
+}
+
+/* Fond personnalisé */
+#backgroundPicker {
+  margin-top: 30px;
 }
