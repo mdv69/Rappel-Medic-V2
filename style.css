@@ -1,0 +1,77 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Quicksand', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Quicksand', sans-serif;
+  background-image: url('fond-medicaments.png'); /* adapte si besoin */
+ background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+
+
+.container {
+  text-align: center;
+  padding: 30px;
+  max-width: 90%;
+  width: 350px; /* Tu peux ajuster à 300px ou 320px selon ton fond */
+  margin: 0 auto;
+}
+
+
+
+/* Titre */
+h1 {
+  font-size: 1.6rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  color: #ff80d5;
+}
+
+/* Bouton principal */
+button {
+  background-color: #d94ec2;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Changement visuel après clic */
+button.clicked {
+  background-color: #6fcf97;
+}
+
+/* Message de confirmation */
+#confirmation-message {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #ff80d5;
+  font-weight: bold;
+}
+
+/* Message bienveillant */
+.quote {
+  margin-top: 40px;
+  font-style: italic;
+  color: #b469e3;
+  font-size: 1rem;
+}
