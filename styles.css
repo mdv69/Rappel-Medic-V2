@@ -78,6 +78,54 @@ button.clicked {
   font-size: 1rem;
 }
 
+/* Champs pour les noms des prises */
+#name-inputs {
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#name-inputs input {
+  width: 80%;
+  max-width: 300px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 2px solid #e6aee3;
+  border-radius: 25px;
+  outline: none;
+  background-color: #fff0fa;
+  color: #8c4799;
+  font-family: 'Quicksand', sans-serif;
+  box-shadow: 0 4px 10px rgba(200, 100, 180, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+#name-inputs input:focus {
+  border-color: #d973d9;
+  background-color: #fff7fc;
+  box-shadow: 0 0 8px rgba(221, 137, 197, 0.4);
+}
+
+/* Bouton de validation des noms */
+#name-inputs button {
+  margin-top: 10px;
+  padding: 12px 25px;
+  background-color: #c86dd7;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#name-inputs button:hover {
+  background-color: #a94bb9;
+}
+
+
 /* Fond personnalisé */
 #backgroundPicker {
   margin-top: 30px;
