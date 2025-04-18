@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rappel Médicaments</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+  <div class="container">
+    <h1>As-tu pris ton médicament ?</h1>
+
+    <!-- Sélecteur de nombre de prises -->
+    <div id="setup" class="setup">
+      <p>Combien de prises par jour ?</p>
+      <button onclick="setPrises(1)">1</button>
+      <button onclick="setPrises(2)">2</button>
+      <button onclick="setPrises(3)">3</button>
+    </div>
+
+    <!-- Zone de confirmation -->
+    <div id="prise-buttons"></div>
+
+    <!-- Message de confirmation -->
+    <div id="confirmation-message"></div>
+
+    <!-- Changer de fond -->
+    <input type="file" id="backgroundPicker" accept="image/*">
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const backgroundPicker = document.getElementById('backgroundPicker');
+      const savedBackground = localStorage.getItem('userBackground');
+      if (savedBackground) {
+        document.body.style.backgroundImage = `url(${savedBackground})`;
+      }
+
+      backgroundPicker.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const dataURL = e.target.result;
+          document.body.style.backgroundImage = `url(${dataURL})`;
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+          localStorage.setItem('userBackground', dataURL);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      const savedPrises = localStorage.getItem('nbPrises');
+      if (savedPrises) {
+        generatePriseButtons(parseInt(savedPrises));
+        document.getElementById('setup').style.display = 'none';
+      }
+    });
+
+    function setPrises(n) {
+      localStorage.setItem('nbPrises', n);
+      document.getElementById('setup').style.display = 'none';
+      generatePriseButtons(n);
+    }
+
+    function generatePriseButtons(n) {
+      const container = document.getElementById('prise-buttons');
+      const today = new Date().toISOString().split('T')[0];
+      container.innerHTML = '';
+
+      for (let i = 1; i <= n; i++) {
+        const key = `taken-${today}-prise-${i}`;
+        const btn = document.createElement('button');
+        btn.textContent = `Prise n°${i}`;
+        btn.id = `btn-${i}`;
+        if (localStorage.getItem(key)) {
+          btn.classList.add('clicked');
+          btn.textContent = `✅ Prise n°${i} — ${localStorage.getItem(key)}`;
+        }
+        btn.addEventListener('click', () => {
+          const now = new Date();
+          const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+          localStorage.setItem(key, time);
+          btn.classList.add('clicked');
+          btn.textContent = `✅ Prise n°${i} — ${time}`;
+        });
+        container.appendChild(btn);
+      }
+    }
+  </script>
+</body>
+</html>
